@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\ItemController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -19,12 +20,15 @@ Route::get('company/{company}/edit', [CompanyController::class, 'edit'])->name('
 Route::patch('/company/{company}', [CompanyController::class, 'update'])->name('company.update');
 Route::delete('company/{company}', [CompanyController::class, 'destroy'])->name('company.destroy');
 
+
 Route::post('company/register', [CompanyController::class, 'register'])->name('company.register');
+
+
 
 
 // 担当者管理
 Route::get('person/index', [PersonController::class, 'index'])->name('person.index');
-Route::get('person/create', [PersonController::class, 'create'])->name('person.create');
+Route::get('company/{company}/person/create', [PersonController::class, 'create'])->name('person.create');
 Route::post('person/store', [PersonController::class, 'store'])->name('person.store');
 
 
@@ -33,3 +37,15 @@ Route::get('person/{person}/edit', [PersonController::class, 'edit'])->name('per
 
 Route::patch('/person/{person}', [PersonController::class, 'update'])->name('person.update');
 Route::delete('person/{person}', [PersonController::class, 'destroy'])->name('person.destroy');
+
+
+
+// 案件管理
+Route::get('item/index', [ItemController::class, 'index'])->name('item.index');
+
+    // 追加
+Route::patch('items/{company}/attach', [ItemController::class, 'attach'])->name('item.attach');
+Route::patch('items/{company}/detach', [ItemController::class, 'detach'])->name('item.detach');
+
+
+

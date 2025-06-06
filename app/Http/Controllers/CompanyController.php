@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\Person;
+use App\Models\Item;
 
 class CompanyController extends Controller
 {
@@ -64,7 +65,10 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        return view('company.show', compact('company'));
+
+        $items=Item::all();
+
+        return view('company.show',  ['items' => $items], compact('company'));
     }
 
     /**
@@ -107,4 +111,6 @@ class CompanyController extends Controller
         return view('person.create', compact('company'));
     }
 
+
+  
 }

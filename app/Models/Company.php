@@ -19,4 +19,8 @@ class Company extends Model
     public function people() {
         return $this->hasMany(Person::class);
     }
+
+    public function items() {
+        return $this->belongsToMany(Item::class)->withTimestamps();;
+    }
 }
