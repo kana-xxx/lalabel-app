@@ -6,6 +6,7 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\Item;
+use App\Models\Status;
 
 class CompanyController extends Controller
 {
@@ -14,25 +15,23 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        
+     
 
-        if (isset($request->keyword)) {
+        if (isset($request->searchword)) {
+            $searchword = $request->searchword;
             $companies = Company::
-                where('name', "LIKE", "%$request->keyword%")->get();
-
-                if ($companies->isEmpty()) {
-                    redirect('company.index')->with('message', '検索結果はなし');
-                    $request->keyword = $request->input('');
-                }
+            orderBy('created_at', 'desc') //新しい順に表示
+            ->Search($searchword)
+            ->paginate(15);
             }
 
         else {
-            $companies = Company::get();
+            $companies = Company::paginate(15);
         }
 
         return view('company.index', [
             'companies' => $companies,
-            'keyword' => $request->keyword
+            'searchword' => $request->searchword,
         ]);
 
     }
@@ -67,8 +66,17 @@ class CompanyController extends Controller
     {
 
         $items=Item::all();
+        $statuses=Status::all();
+        $sittyuStatues = $company->items()->wherePivot('status_id', 2 )->get();
+        
 
-        return view('company.show',  ['items' => $items], compact('company'));
+        return view('company.show',  
+        [
+        'items' => $items, 
+        'statuses' => $statuses,
+        'sittyuStatues' => $sittyuStatues
+        ],
+         compact('company'));
     }
 
     /**

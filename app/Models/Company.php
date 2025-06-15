@@ -21,6 +21,28 @@ class Company extends Model
     }
 
     public function items() {
-        return $this->belongsToMany(Item::class)->withTimestamps();;
+        return $this->belongsToMany(Item::class, 'company_item', 'company_id', 'item_id')
+        ->using(CompanyItem::class)
+        ->withPivot(['status_id']);
     }
+
+
+    public function statuses()
+    {
+        return $this->belongsToMany(Status::class, 'company_item');
+    }
+
+
+
+    public function scopeSearch($query, $searchword){
+
+        return $query->where(function ($query) use($searchword) {
+            $query->orWhere('name', 'like', "%{$searchword}%")
+                ->orWhere('address', 'like', "%{$searchword}%")
+                ->orWhere('phone', 'like', "%{$searchword}%")
+                ->orWhere('note', 'like', "%{$searchword}%");
+        });
+    }
+
+
 }

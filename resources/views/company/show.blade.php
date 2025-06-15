@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
+
+<style>
+    /* 案件一覧 */
+    .anken_list {
+        display: flex;
+        column-gap: .5rem;
+        border-bottom: 1px solid #ddd;
+        width: 70%;
+        padding: .4rem .8rem;
+    }
+
+
+    .sittyu_display {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+    .none {
+        display: none;
+    }
+</style>
 <body>
 
 <p>企業詳細表示</p>
@@ -53,27 +77,66 @@
 
 
 
+            <!-- 案件一覧 -->
+
+            <p>案件一覧</p>
             @if ($company->items->count())
 
-    <p>案件</p>
+                            <!-- 失注フィルターボタン -->
+                            <button id="sittyu_btn">失注</button>
 
+            <div class="anken_display">
             @foreach ($company->items as $item)
-
-    <form method="post" action="{{route('item.detach', $company)}}">
+             <form class="anken_list" method="post" action="{{route('item.detach', $company)}}">
                     @csrf
                     @method('patch')
 
                     <p>{{ $item->name }}</p> 
                     <input type="hidden" name="item" value="{{$item->id}}">
                     <input type="hidden" name='company_id' value="{{$company->id}}">
+
+                    <p>{{ $item->pivot->status->name}}</p> 
                     <button class="btnroler">
                         削除
                     </button>
                 </form>
+                @endforeach
+            </div>
+             
+
+                <div class="sittyu_display">
+                @foreach ($sittyuStatues as $sittyu) 
+                <form class="anken_list" method="post" action="{{route('item.detach', $company)}}">
+                    @csrf
+                    @method('patch')
+
+                    <p>{{$sittyu->name}}</p> 
+                    <input type="hidden" name="item" value="{{$item->id}}">
+                    <input type="hidden" name='company_id' value="{{$company->id}}">
+
+                    <p>{{$sittyu->pivot->status->name}}</p> 
+                        <button class="btnroler">
+                            削除
+                        </button>
+                </form>
 
                 @endforeach
 
-            
+                </div>
+              
+
+                @else
+                @endif  
+
+
+
+                <!-- <div class="sittyu_display">
+                @foreach ($sittyuStatues as $sittyu) 
+                <p>{{ $sittyu->name }}</p>
+                <p>{{ $sittyu->pivot->status->name}}</p> 
+                @endforeach
+                </div> -->
+
 
                   <form method="post" action="{{route('item.attach', $company)}}">
                     @csrf
@@ -83,15 +146,63 @@
                                 <option value="{{$item->id}}">{{$item->name}}</option>
                             @endforeach
                         </select>
+
+                      
+                        <select name="state_id" id="state_input">
+                        @foreach ($statuses as $status)
+                            <option value="{{$status->id}}">{{$status->name}}</option>
+                            @endforeach
+                        </select>
+               
+
                         <input type="hidden" name='company_id' value="{{$company->id}}">
                     <button class="btnroleb">
                         案件追加
                     </button>
                 </form>
+
+
+
+
+<br>
+<p>案件の更新</p>
+
+
+@if ($company->items->count())            
+@foreach ($company->items as $item)
+
+<form method="post" action="{{ route('item.update', $company) }}" enctype="multipart/form-data">
+@csrf
+@method('patch')
+
+<div>
+    <label for="item">案件</label>
+    <p>{{ $item->name }}</p> 
+    <input type="hidden" name="item" value="{{$item->id}}">
+</div>
+<input type="hidden" name='company_id' value="{{$company->id}}">
+
+<div>
+
+    <label for="note">状況</label>
+    <select name="state_id" id="state_input">
+                        @foreach ($statuses as $status)
+                            <option value="{{$status->id}}">{{$status->name}}</option>
+                            @endforeach
+                        </select>
+</div>
+
+<button type="submit">更新</button>
+</form>
+
+@endforeach
+
+
+@else
+@endif  
                 
 
-                @else
-                @endif
+ 
  
           </div>
                 </div>
@@ -100,6 +211,26 @@
 </div>
 <div>
 </div>
+
+
+<!-- 失注ボタン -->
+ <script>
+const sittyuBtn = document.getElementById('sittyu_btn');
+
+sittyuBtn.addEventListener('click', function() {
+    const sittyuDisplay = document.querySelector('.sittyu_display');
+    const ankenDisplay = document.querySelector('.anken_display')
+    sittyuDisplay.classList.toggle('active');
+    ankenDisplay.classList.toggle('none');
+  
+      });
+
+ </script>
+
+
+
     
 </body>
 </html>
+
+

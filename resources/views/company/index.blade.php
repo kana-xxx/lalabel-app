@@ -20,8 +20,8 @@
 
 <div>
   <form action="{{ route('company.index') }}" method="GET">
-    <input type="text" name="keyword" value="{{ $keyword }}">
-    <input type="submit" value="検索">
+    <input type="text" name="searchword" value="{{$searchword}}"  class="form-control mr-sm-2" placeholder="キーワードを入力">
+    <button type="submit" class="search-box btn btn-info">検索</button>
   </form>
 </div>
 
@@ -36,6 +36,7 @@
 </ul>
 @endforeach
 </div>
+{{ $companies->links() }}
     
 </body>
 </html>

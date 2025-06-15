@@ -15,6 +15,8 @@ class Item extends Model
 
 
     public function companies() {
-        return $this->belongsToMany(Company::class)->withTimestamps();
+        return $this->belongsToMany(Company::class, 'company_item', 'company_id', 'item_id')
+        ->using(CompanyItem::class)
+        ->withPivot(['status_id']);
     }
 }

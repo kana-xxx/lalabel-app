@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\StatusController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -43,9 +44,19 @@ Route::delete('person/{person}', [PersonController::class, 'destroy'])->name('pe
 // 案件管理
 Route::get('item/index', [ItemController::class, 'index'])->name('item.index');
 
+Route::patch('items/{company}', [ItemController::class, 'update'])->name('item.update');
+
     // 追加
 Route::patch('items/{company}/attach', [ItemController::class, 'attach'])->name('item.attach');
 Route::patch('items/{company}/detach', [ItemController::class, 'detach'])->name('item.detach');
 
 
+// ステータス
+Route::get('status/index', [StatusController::class, 'index'])->name('status.index');
+Route::get('status/create', [StatusController::class, 'create'])->name('status.create');
+Route::post('status/store', [StatusController::class, 'store'])->name('status.store');
 
+
+Route::get('status/{status}', [StatusController::class, 'show'])->name('status.show');
+Route::get('status/{status}/edit', [StatusController::class, 'edit'])->name('status.edit');
+Route::patch('/status/{status}', [StatusController::class, 'update'])->name('status.update');
