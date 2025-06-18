@@ -5,10 +5,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\StatusController;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+use App\Http\Controllers\AuthController;
 
 
 // 企業管理
@@ -60,3 +57,10 @@ Route::post('status/store', [StatusController::class, 'store'])->name('status.st
 Route::get('status/{status}', [StatusController::class, 'show'])->name('status.show');
 Route::get('status/{status}/edit', [StatusController::class, 'edit'])->name('status.edit');
 Route::patch('/status/{status}', [StatusController::class, 'update'])->name('status.update');
+
+
+// ログイン
+Route::get('/login', function () {
+    return view('login');
+});
+Route::post('/login', [AuthController::class, 'login'])->name('login');

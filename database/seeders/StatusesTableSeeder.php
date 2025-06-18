@@ -14,12 +14,12 @@ class StatusesTableSeeder extends Seeder
     public function run(): void
     {
         Status::create([
-            'id' => 3,
-            'name' => '成約',
+            'id' => 5,
+            'name' => '発見',
            ]);
     
            Status::create([
-            'id' => 4,
+            'id' => 6,
             'name' => '進行中',
            ]);
     }

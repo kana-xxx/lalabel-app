@@ -19,4 +19,12 @@ class Item extends Model
         ->using(CompanyItem::class)
         ->withPivot(['status_id']);
     }
+
+
+    // public function scopeSittyuFilter($query, $stateName)
+    // {
+    //     return $query-where('name', $stateName);
+        
+
+    // }
 }

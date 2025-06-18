@@ -62,19 +62,30 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Company $company)
+    public function show(Request $request , Company $company)
     {
+        if (isset($request->pullStatus)) {
+            $pullStatus = $request->pullStatus;
+            $selectItems = $company->items()->wherePivot('status_id', $pullStatus )->get();
 
-        $items=Item::all();
-        $statuses=Status::all();
-        $sittyuStatues = $company->items()->wherePivot('status_id', 2 )->get();
-        
+            $items=Item::all();
+            $statuses=Status::all();
 
+
+        } else {
+            $items=Item::all();
+            $statuses=Status::all();
+            $selectItems=Item::all();
+
+        }
+           
+          
         return view('company.show',  
         [
         'items' => $items, 
         'statuses' => $statuses,
-        'sittyuStatues' => $sittyuStatues
+        'selectItems' => $selectItems,
+        'pullStatus' => $request->pullStatus,
         ],
          compact('company'));
     }
@@ -119,6 +130,11 @@ class CompanyController extends Controller
         return view('person.create', compact('company'));
     }
 
+
+    public function statusFilter(Request $request) {
+        $statusesSittyu = Status::SittyuFilter($request->stateName)->get();
+        return view('company.show', ['statusesSittyu'=>$statusesSittyu]);
+     }
 
   
 }

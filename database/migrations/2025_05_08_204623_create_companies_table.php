@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('address');
+            // $table->foreignId('person_id')
             $table->text('note')->nullable();
             $table->timestamps();
         });

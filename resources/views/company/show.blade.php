@@ -53,7 +53,7 @@
 </ul>
 
 
-    @if ($company->people->count())
+
 <div>
     <p>担当者一覧</p>
 
@@ -62,9 +62,10 @@
     <input type="hidden" name='company_id' value="{{$company->id}}">
     <button type="submit">担当者登録</button>
 </form>
-
+@if ($company->people->count())
     <ul>
     <li>
+
         {{-- 担当者表示 --}}
 @foreach ($company->people as $person)
     <a href="{{route('person.show', $person)}}">{{ $person->name }}</a>
@@ -82,9 +83,42 @@
             <p>案件一覧</p>
             @if ($company->items->count())
 
-                            <!-- 失注フィルターボタン -->
-                            <button id="sittyu_btn">失注</button>
+            <!-- フィルターボタン -->   
+            <form class="" method="GET" action="{{route('company.show', $company)}}">
+            <select name="pullStatus" class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" required>
+                                @foreach ($statuses as $pullStatus)
+                                <option value="{{$pullStatus->id}}">{{ $pullStatus->name }}</option>
+                                @endforeach
+                        </select>
+                        <button class="btnroler" name=”pullStatus”>
+                        選択
+                    </button>
+            </form>
 
+            <!-- 案件ステータスを選択した場合 -->
+
+            @if (isset($_GET['pullStatus']))
+            <div class="anken_display">
+            @foreach ($selectItems as $item)
+             <form class="anken_list" method="post" action="{{route('item.detach', $company)}}">
+                    @csrf
+                    @method('patch')
+
+                    <p>{{ $item->name }}</p> 
+                    <input type="hidden" name="item" value="{{$item->id}}">
+                    <input type="hidden" name='company_id' value="{{$company->id}}">
+                    <p>{{ $item->pivot->status->name}}</p> 
+                 
+                    <button class="btnroler">
+                        削除
+                    </button>
+                </form>
+                @endforeach
+            </div>
+
+            @else
+
+            <!-- 案件ステータスを選択しない場合 -->
             <div class="anken_display">
             @foreach ($company->items as $item)
              <form class="anken_list" method="post" action="{{route('item.detach', $company)}}">
@@ -102,40 +136,18 @@
                 </form>
                 @endforeach
             </div>
+
+            @endif  
+
              
 
-                <div class="sittyu_display">
-                @foreach ($sittyuStatues as $sittyu) 
-                <form class="anken_list" method="post" action="{{route('item.detach', $company)}}">
-                    @csrf
-                    @method('patch')
-
-                    <p>{{$sittyu->name}}</p> 
-                    <input type="hidden" name="item" value="{{$item->id}}">
-                    <input type="hidden" name='company_id' value="{{$company->id}}">
-
-                    <p>{{$sittyu->pivot->status->name}}</p> 
-                        <button class="btnroler">
-                            削除
-                        </button>
-                </form>
-
-                @endforeach
-
-                </div>
-              
-
+            
                 @else
                 @endif  
 
 
 
-                <!-- <div class="sittyu_display">
-                @foreach ($sittyuStatues as $sittyu) 
-                <p>{{ $sittyu->name }}</p>
-                <p>{{ $sittyu->pivot->status->name}}</p> 
-                @endforeach
-                </div> -->
+
 
 
                   <form method="post" action="{{route('item.attach', $company)}}">
