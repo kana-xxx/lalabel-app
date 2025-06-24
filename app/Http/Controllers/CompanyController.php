@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\Item;
 use App\Models\Status;
+use App\Models\Comment;
 
 class CompanyController extends Controller
 {
@@ -62,7 +63,7 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request , Company $company)
+    public function show(Request $request , Company $company, Comment $comment)
     {
         if (isset($request->pullStatus)) {
             $pullStatus = $request->pullStatus;
@@ -70,11 +71,13 @@ class CompanyController extends Controller
 
             $items=Item::all();
             $statuses=Status::all();
+            $comments=Comment::all();
 
 
         } else {
             $items=Item::all();
             $statuses=Status::all();
+            $comments=Comment::all();
             $selectItems=Item::all();
 
         }
@@ -83,6 +86,8 @@ class CompanyController extends Controller
         return view('company.show',  
         [
         'items' => $items, 
+        'comments' => $comments,
+        'comment' => $comment,
         'statuses' => $statuses,
         'selectItems' => $selectItems,
         'pullStatus' => $request->pullStatus,

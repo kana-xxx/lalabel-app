@@ -14,4 +14,8 @@ class CompanyItem extends Pivot
     {
         return $this->belongsTo(Status::class);
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
 }

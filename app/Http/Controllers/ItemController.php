@@ -6,6 +6,8 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\Status;
+use App\Models\Comment;
+use App\Models\User;
 
 class ItemController extends Controller
 {
@@ -14,6 +16,12 @@ class ItemController extends Controller
         $items = Item::all();
         return view('item.index', compact('items'));
 
+    }
+
+    public function show(Item $item, Company $company, Status $status, Comment $comment)
+    {
+        $user=auth()->user();
+        return view('item.show', compact('item', 'company', 'status', 'comment', 'user'));
     }
 
     

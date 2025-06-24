@@ -33,6 +33,11 @@ class Company extends Model
     }
 
 
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+
 
     public function scopeSearch($query, $searchword){
 

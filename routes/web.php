@@ -1,11 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\CommentController;
+
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LogoutController;
 
 
 // 企業管理
@@ -40,7 +44,7 @@ Route::delete('person/{person}', [PersonController::class, 'destroy'])->name('pe
 
 // 案件管理
 Route::get('item/index', [ItemController::class, 'index'])->name('item.index');
-
+Route::get('item/{item}/{company}', [ItemController::class, 'show'])->name('item.show');
 Route::patch('items/{company}', [ItemController::class, 'update'])->name('item.update');
 
     // 追加
@@ -59,8 +63,16 @@ Route::get('status/{status}/edit', [StatusController::class, 'edit'])->name('sta
 Route::patch('/status/{status}', [StatusController::class, 'update'])->name('status.update');
 
 
+
+// コメント
+Route::get('comment/index', [CommentController::class, 'index'])->name('comment.index');
+Route::get('comment/create/{company}/{item}', [CommentController::class, 'create'])->name('comment.create');
+Route::get('comment/{comment}', [CommentController::class, 'show'])->name('comment.show');
+
+Route::post('comment/store', [CommentController::class, 'store'])->name('comment.store');
+
 // ログイン
-Route::get('/login', function () {
-    return view('login');
-});
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

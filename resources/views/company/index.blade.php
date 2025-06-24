@@ -6,6 +6,20 @@
     <title>Document</title>
 <body>
 
+@auth
+        <p class="text-center">ログイン中: {{ Auth::user()->name }}</p>
+    @endauth
+
+    <div class="d-flex justify-content-center">
+        @auth
+        <form class="text-center mt-4" action="{{ route('logout') }}" method="POST" class="d-inline">
+        @csrf
+        <button type="submit" class="btn btn-danger mx-2">ログアウト</button>
+    </form>
+        @else
+        @endauth
+    </div>
+
 <header>
 <a href="{{route('company.index')}}">企業一覧</a>
 <a href="{{route('person.index')}}">担当者一覧</a>

@@ -107,8 +107,7 @@
                     <p>{{ $item->name }}</p> 
                     <input type="hidden" name="item" value="{{$item->id}}">
                     <input type="hidden" name='company_id' value="{{$company->id}}">
-                    <p>{{ $item->pivot->status->name}}</p> 
-                 
+                    <p>{{ $item->pivot->status->name}}</p>                         
                     <button class="btnroler">
                         削除
                     </button>
@@ -125,11 +124,23 @@
                     @csrf
                     @method('patch')
 
-                    <p>{{ $item->name }}</p> 
+                    <!-- 案件名 -->
+                    <a href="{{route('item.show', [$item , $company->id , $comment])}}"><p>{{ $item->name }}</p> </a>
                     <input type="hidden" name="item" value="{{$item->id}}">
                     <input type="hidden" name='company_id' value="{{$company->id}}">
 
+                    <!-- ステータス -->
                     <p>{{ $item->pivot->status->name}}</p> 
+                    
+                    <!-- コメント -->
+                    @foreach ($company->comments as $comment)
+                    <a href="{{route('comment.show', $comment)}}">
+                    @endforeach
+                        <p>{{ $item->comments->count()}}</p>
+                    </a>
+
+                        
+                    <!-- 削除ボタン -->
                     <button class="btnroler">
                         削除
                     </button>
