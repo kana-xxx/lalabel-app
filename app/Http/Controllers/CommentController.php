@@ -14,8 +14,7 @@ class CommentController extends Controller
     public function index()
     {
         $comments = Comment::all();
-        $user=auth()->user();
-        return view('comment.index', compact('comments', 'user'));
+        return view('comment.index', compact('comments'));
     }
 
     public function show(Comment $comment)
@@ -25,7 +24,6 @@ class CommentController extends Controller
 
     public function create(Comment $comment ,Company $company, Item $item)
     {
-        $user=auth()->user();
         return view('comment.create', compact('comment', 'company', 'item'));
     }
 
